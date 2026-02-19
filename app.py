@@ -12,7 +12,7 @@ My name is Shuyue Hou. I am applying for a Data Analyst / Data Scientist role.
 Here is my resume content:
 
 [Contact]
-Email: shou003@e.ntu.edu.sg | Phone: +86 18801036339 | LinkedIn: Shuyue Hou
+Email: shou003@e.ntu.edu.sg | LinkedIn: Shuyue Hou
 
 [Education]
 1. M.Sc. in Signal Processing and Machine Learning, Nanyang Technological University (Aug 2024-Jun 2025). Grade: 3.3/5.0.
@@ -44,7 +44,7 @@ Python, SQL (Advanced), Tableau, Power BI, GenAI/LLM, ETL, Anomaly Detection.
 
 
 # -----------------------------------------------------------------------------
-# 1. 页面配置 (必须是第一行命令)
+# 1. 页面配置 
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="Shuyue's Data Portfolio",

@@ -12,7 +12,7 @@ My name is Shuyue Hou. I am applying for a Data Analyst / Data Scientist role.
 Here is my resume content:
 
 [Contact]
-Email: shou003@e.ntu.edu.sg | Phone: +86 18801036339 | LinkedIn: Shuyue Hou
+Email: shou003@e.ntu.edu.sg | LinkedIn: Shuyue Hou
 
 [Education]
 1. M.Sc. in Signal Processing and Machine Learning, Nanyang Technological University (Aug 2024-Jun 2025). Grade: 3.3/5.0.
@@ -70,7 +70,6 @@ with st.sidebar:
 
     # 联系方式
     st.write("📧 shou003@e.ntu.edu.sg")
-    st.write("📞 +86 18801036339")
     st.write("🔗 [LinkedIn Profile](https://www.linkedin.com/in/olivia-h-44721b304/)")  # 替换为你的真实链接
     st.write("🔗 [Tableau Portfolio](https://public.tableau.com/app/profile/shuyue.hou)")
 
@@ -161,12 +160,12 @@ with tab1:
 
     st.divider()
 
-    # --- ✨ 新增部分：创业经历 (Entrepreneurship) ---
+    # --- 创业经历 (Entrepreneurship) ---
     st.header("🚀 Entrepreneurship Experience")
 
     with st.container():
         st.subheader("Co-founder | OfferLah (Startup)")
-        st.caption("Feb 2025 - Jun 2025 | Singapore")
+        st.caption("Feb 2025 - Present | Singapore")
 
         st.markdown("""
         *   **Operational System Design & Automation:** Spearheaded the migration from **manual spreadsheets to an automated scheduling ecosystem**. Established a centralized data tracking system that **reduced admin overhead by 40%**.

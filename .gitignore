@@ -1,0 +1,8 @@
+# 忽略 Streamlit 的密钥文件
+.streamlit/secrets.toml
+.streamlit/
+
+# 忽略 PyCharm 的配置文件夹
+.idea/
+__pycache__/
+*.pyc

@@ -44,7 +44,7 @@ Python, SQL (Advanced), Tableau, Power BI, GenAI/LLM, ETL, Anomaly Detection.
 
 
 # -----------------------------------------------------------------------------
-# 1. 页面配置 (必须是第一行命令)
+# 1. 页面配置 
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="Shuyue's Data Portfolio",

@@ -22,7 +22,7 @@ Awards: Academic Excellence Award (2020, 2023), Red Forest Scholarship.
 
 [Experience]
 1. Machine Learning Engineer @ Pingan Bank (Aug 2025-Present)
-- Developed Rate/Mix decomposition engine (Python/Pandas) for $10B+ deposit campaigns.
+- Developed Rate/Mix decomposition engine (Python/Pandas) for ￥10B+ deposit campaigns.
 - Designed GenAI-powered dashboard (LLM/Agent) reducing report time by 98%.
 - Engineered ETL pipeline (SQL & Python) ensuring 100% data integrity.
 
@@ -62,7 +62,7 @@ with st.sidebar:
     st.image("materials/selfie.png", width=150)
 
     st.title("Shuyue Hou")
-    st.markdown("**Machine Learning Engineer | Data Analyst**")
+    st.markdown("**Machine Learning Engineer @ Pingan Bank**")
     st.markdown("🎓 **M.Sc. @ NTU (Signal Processing and Machine Learning)**")
     st.markdown("🎓 **B.Sc. @ BIT (Statistics)**")
 
@@ -70,8 +70,9 @@ with st.sidebar:
 
     # 联系方式
     st.write("📧 shou003@e.ntu.edu.sg")
-    st.write("🔗 [LinkedIn Profile](https://www.linkedin.com/in/olivia-h-44721b304/)")
-    st.write("🔗 [Tableau Portfolio](https://public.tableau.com/app/profile/shuyue.hou)")
+    st.write("🔗 [Github](https://github.com/sHellzip)")
+    st.write("🔗 [LinkedIn](https://www.linkedin.com/in/olivia-h-44721b304/)")
+    st.write("🔗 [Tableau](https://public.tableau.com/app/profile/shuyue.hou)")
 
     st.divider()
 
@@ -94,14 +95,10 @@ st.title("👋 Hi, I'm Shuyue.")
 st.markdown("""
 ### Applying for the **Data Analyst / Data Scientist** Role
 > 🚀 **Why Me?**  
-> I turn complex data into **actionable business decisions** and production-ready solutions.  
->  
-> I specialize in **end-to-end analytics** — from problem framing and metric design to insight generation and productization  
-> (**Data Analysis → Business Insight → AI Application → Product Delivery**).  
->  
-> At *Ping An Bank*, I built anomaly diagnosis engines and GenAI-powered reporting tools that reduced analysis time from days to hours.  
-> At *Xiaohongshu*, I optimized bidding strategies through user behavior analysis, driving measurable ROAS growth.  
->  
+> I turn complex data into **actionable business decisions** and production-ready solutions.   
+> **Data Analysis → Business Insight → AI Application → Product Delivery**.  
+> At *Ping An Bank*, I built anomaly diagnosis engines and **GenAI-powered** reporting tools that reduced analysis time from days to hours.  
+> At *Xiaohongshu*, I optimized bidding strategies through user behavior analysis, driving measurable **ROAS growth**.  
 > My strength lies in combining **SQL, Python, and statistical thinking** with **AI integration and product mindset** to solve real business problems at scale.
 """)
 
@@ -120,8 +117,8 @@ with tab1:
 
     with col1:
         st.markdown("#### 💻 Programming & Data")
-        st.write("✅ **Python (Pandas, Scikit-Learn)**")
-        st.write("✅ **SQL (Advanced/MySQL)**")
+        st.write("✅ **Python**")
+        st.write("✅ **SQL**")
         st.write("✅ **Java & Data Cleaning & Git**")
 
     with col2:
@@ -147,7 +144,7 @@ with tab1:
         st.caption("Aug 2025 - Present (Full Time) | Shenzhen")
 
         st.markdown("""
-        *   **Business Driver & Root Cause Analysis:** Developed a Rate/Mix decomposition engine to **quantify drivers** behind CTR/CVR fluctuations for **$10B+ campaigns**. Reduced anomaly diagnosis time from days to hours.
+        *   **Business Driver & Root Cause Analysis:** Developed a Rate/Mix decomposition engine to **quantify drivers** behind CTR/CVR fluctuations for **￥10B+ campaigns**. Reduced anomaly diagnosis time from days to hours.
         *   **GenAI-powered Dashboard:** Designed an **LLM-Agent dashboard** that auto-generates diagnostic reports, slashing reporting time by **98%**. 
         *   **Data Pipeline (ETL):** Engineered a robust **Source-ETL-Model pipeline** (SQL & Python) to resolve T0/T1 data alignment, ensuring **100% data integrity** for attribution models.
         """)
@@ -155,8 +152,8 @@ with tab1:
 
     # 经历 2: Xiaohongshu
     with st.container():
-        st.subheader("Data Analyst Intern | Xiaohongshu (RED)")
-        st.caption("Dec 2023 - May 2024 | Beijing")
+        st.subheader("Data Analyst | Xiaohongshu (RED)")
+        st.caption("Dec 2023 - May 2024 (Intern) | Beijing")
 
         st.markdown("""
         *   **Strategic Bidding (SQL):** Analyzed **300,000+ user search behaviors using SQL**. Identified long-tail keywords to optimize budget allocation.
@@ -179,7 +176,7 @@ with tab1:
         *   **Funnel Analysis & User Growth:** Defined full-funnel conversion metrics. Identified a **15% drop-off** at the service inquiry stage using data visualization, prompting a UI/UX redesign that improved the **Lead-to-Customer conversion rate by 20%**.
         """)
         st.success(
-            "🌟 **Highlight:** Demonstrated full-cycle ability from defining metrics -> identifying problems -> implementing solutions.")
+            "💡 **Impact:** Demonstrated full-cycle ability from defining metrics -> identifying problems -> implementing solutions.")
 
     st.divider()
 
@@ -246,14 +243,13 @@ with tab2:
         # ---------------------------------------------------------------------
         # 4. 处理用户输入
         # ---------------------------------------------------------------------
-        if prompt := st.chat_input("Ask about my experience (e.g., 'Tell me about the RED project')"):
+        if prompt := st.chat_input("Ask about my experience (e.g., 'Tell me about the RED experience')"):
 
             # 4.1 显示用户提问
             st.session_state.messages.append({"role": "user", "content": prompt})
             st.chat_message("user").write(prompt)
 
             # 4.2 构造发送给 AI 的消息列表 (System Prompt + History)
-            # 我们把 RESUME_CONTENT 作为 System Prompt 藏在最前面，不显示在界面上
             api_messages = [
                 {"role": "system",
                  "content": f"You are a helpful assistant representing Shuyue Hou. Answer questions based strictly on this resume context:\n\n{RESUME_CONTENT}\n\nIf the answer is not in the resume, say you don't know but offer to contact Shuyue directly."}
@@ -285,7 +281,7 @@ with tab2:
 # TAB 3: 多维比率归因引擎 (Rate/Mix + Beam Search)
 # =============================================================================
 with tab3:
-    st.header("📉 Metric Attribution Engine (Rate/Mix + Beam Search)")
+    st.header("📉 Metric Attribution Engine")
     st.markdown("""
     This module simulates the **Root Cause Analysis System** I developed using Python.
     Unlike traditional dashboards, it uses a **Beam Search Algorithm** to automatically traverse high-dimensional data 
@@ -349,9 +345,10 @@ with tab3:
     # -------------------------------------------------------------------------
     # 4. 第一层：Rate/Mix 瀑布图 (Waterfall)
     # -------------------------------------------------------------------------
-    st.subheader("1️⃣ Global Attribution: Rate vs. Mix")
-    st.caption(
-        "Did the CTR drop because ads performed worse (Rate), or because traffic shifted to low-CTR channels (Mix)?")
+    st.subheader("Global Attribution (Aggregated by Channel Dimension)")
+    st.caption("""
+       Did the CTR drop because ads performed worse (Rate), or because traffic shifted to low-CTR channels (Mix)?
+    """)
 
     fig_waterfall = go.Figure(go.Waterfall(
         name="CTR Decomposition", orientation="v",
@@ -379,7 +376,7 @@ with tab3:
     # -------------------------------------------------------------------------
     # 5. 第二层：Beam Search 自动下钻结果 (Automated Drill-down)
     # -------------------------------------------------------------------------
-    st.subheader("2️⃣ Automated Root Cause Discovery (Beam Search)")
+    st.subheader("Automated Root Cause Discovery (Beam Search)")
     st.markdown("""
     The system executed a **Beam Search** algorithm (Top-K pruning) across dimensions: `Channel`, `App_Version`, `User_Tag`.
     Here are the **Top Negative Contributors** identified automatically:

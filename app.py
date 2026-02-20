@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from openai import OpenAI
 import numpy as np
+import plotly.graph_objects as go
 
 # -----------------------------------------------------------------------------
 # 0. 简历数据 (System Prompt Context)
@@ -57,8 +58,7 @@ st.set_page_config(
 # 2. 侧边栏：个人信息 (Sidebar)
 # -----------------------------------------------------------------------------
 with st.sidebar:
-    # 确保 materials/selfie.png 存在，否则会显示破图图标
-    # 如果还没照片，暂时注释掉下面这行
+
     st.image("materials/selfie.png", width=150)
 
     st.title("Shuyue Hou")
@@ -70,7 +70,7 @@ with st.sidebar:
 
     # 联系方式
     st.write("📧 shou003@e.ntu.edu.sg")
-    st.write("🔗 [LinkedIn Profile](https://www.linkedin.com/in/olivia-h-44721b304/)")  # 替换为你的真实链接
+    st.write("🔗 [LinkedIn Profile](https://www.linkedin.com/in/olivia-h-44721b304/)")
     st.write("🔗 [Tableau Portfolio](https://public.tableau.com/app/profile/shuyue.hou)")
 
     st.divider()
@@ -94,9 +94,15 @@ st.title("👋 Hi, I'm Shuyue.")
 st.markdown("""
 ### Applying for the **Data Analyst / Data Scientist** Role
 > 🚀 **Why Me?**  
-> I bridge the gap between **Complex Data Engineering** and **Business Strategy**.  
-> From building **Anomaly diagnosis** & **GenAI dashboards** at *Pingan Bank* to optimizing **Bidding Strategies** at *Xiaohongshu*, 
-> I leverage **SQL, Python, and Anomaly Detection** to solve business-technology challenges.
+> I turn complex data into **actionable business decisions** and production-ready solutions.  
+>  
+> I specialize in **end-to-end analytics** — from problem framing and metric design to insight generation and productization  
+> (**Data Analysis → Business Insight → AI Application → Product Delivery**).  
+>  
+> At *Ping An Bank*, I built anomaly diagnosis engines and GenAI-powered reporting tools that reduced analysis time from days to hours.  
+> At *Xiaohongshu*, I optimized bidding strategies through user behavior analysis, driving measurable ROAS growth.  
+>  
+> My strength lies in combining **SQL, Python, and statistical thinking** with **AI integration and product mindset** to solve real business problems at scale.
 """)
 
 # -----------------------------------------------------------------------------
@@ -142,7 +148,7 @@ with tab1:
 
         st.markdown("""
         *   **Business Driver & Root Cause Analysis:** Developed a Rate/Mix decomposition engine to **quantify drivers** behind CTR/CVR fluctuations for **$10B+ campaigns**. Reduced anomaly diagnosis time from days to hours.
-        *   **GenAI-powered Dashboard:** Designed an **LLM-Agent dashboard** that auto-generates diagnostic reports, slashing reporting time by **98%**. *(Directly matches JD: Support dashboards & reports)*
+        *   **GenAI-powered Dashboard:** Designed an **LLM-Agent dashboard** that auto-generates diagnostic reports, slashing reporting time by **98%**. 
         *   **Data Pipeline (ETL):** Engineered a robust **Source-ETL-Model pipeline** (SQL & Python) to resolve T0/T1 data alignment, ensuring **100% data integrity** for attribution models.
         """)
         st.success("💡 **Impact:** Solved the 'Business-Technology Challenge' by automating manual diagnostics with GenAI.")
@@ -157,6 +163,7 @@ with tab1:
         *   **Business Impact:** Drove a **25% increase in ROAS** and 18% growth in sales volume by capturing niche user intent.
         *   **Dashboarding:** Developed automated **Power BI dashboards** to visualize real-time metrics (CTR, CVR, CPA), reducing reporting time by 50%.
         """)
+        st.success("💡 **Impact:** Demonstrated data-driven growth capability by translating user behavior insights into bidding strategies that significantly improved ROAS and revenue.")
 
     st.divider()
 
@@ -264,7 +271,7 @@ with tab2:
                         messages=api_messages,
                         stream=True
                     )
-                    # 流式输出 (打字机效果)
+                    # 流式输出
                     response = st.write_stream(stream)
 
                 # 4.4 保存 AI 回复到历史
@@ -275,85 +282,156 @@ with tab2:
 
 
 # =============================================================================
-# TAB 3: Interactive Analysis (The "Show Me" Part)
+# TAB 3: 多维比率归因引擎 (Rate/Mix + Beam Search)
 # =============================================================================
 with tab3:
-    st.header("📊 Interactive Data Analysis Demo")
-    st.write(
-        "This interactive dashboard simulates the **Anomaly Detection & ROAS Optimization** logic I implemented at *Pingan Bank* and *Xiaohongshu*.")
+    st.header("📉 Metric Attribution Engine (Rate/Mix + Beam Search)")
+    st.markdown("""
+    This module simulates the **Root Cause Analysis System** I developed using Python.
+    Unlike traditional dashboards, it uses a **Beam Search Algorithm** to automatically traverse high-dimensional data 
+    and decompose Ratio Metrics (e.g., CTR, CVR) into **Rate Effect** (Efficiency) vs. **Mix Effect** (Structure).
+    """)
 
-    # --- 1. 模拟数据生成 (Data Simulation) --- #
 
-    dates = pd.date_range(start="2024-01-01", periods=90)
+    # -------------------------------------------------------------------------
+    # 1. 定义核心算法逻辑
+    # -------------------------------------------------------------------------
+    def calculate_ratio_contribution_v2(node_ratio_t0, node_ratio_t1, w_t0, w_t1):
+        """
+        Reflecting the exact logic from my project code:
+        Rate Effect = (Rate_t1 - Rate_t0) * W_t1
+        Mix Effect  = (W_t1 - W_t0) * Rate_t0
+        """
+        rate_effect = (node_ratio_t1 - node_ratio_t0) * w_t1
+        mix_effect = (w_t1 - w_t0) * node_ratio_t0
+        return rate_effect, mix_effect
 
-    # 模拟基础趋势
-    base_traffic = np.linspace(1000, 5000, 90)  # 逐步增长
-    noise = np.random.normal(0, 200, 90)  # 随机波动
-    traffic = base_traffic + noise
-
-    # 模拟转化率 (CVR)
-    cvr = np.random.uniform(0.02, 0.05, 90)
-
-    # 插入“异常点” (Anomalies) - 模拟某天服务器故障或投放事故
-    traffic[20] = 500  # 暴跌
-    traffic[65] = 8000  # 暴涨
-    cvr[20] = 0.005  # 转化率异常低
-
-    # 组装 DataFrame
-    df_demo = pd.DataFrame({
-        "Date": dates,
-        "Traffic (Clicks)": traffic,
-        "CVR (Conversion Rate)": cvr,
-        "Cost": traffic * np.random.uniform(0.5, 0.8, 90),
-    })
-    df_demo["Revenue"] = df_demo["Traffic (Clicks)"] * df_demo["CVR (Conversion Rate)"] * 100
-    df_demo["ROAS"] = df_demo["Revenue"] / df_demo["Cost"]
-
-    # --- 2. 交互控制区 (Interactive Widgets) ---
-    col_ctrl1, col_ctrl2 = st.columns([1, 3])
-
-    with col_ctrl1:
-        st.markdown("#### ⚙️ Settings")
-        metric_choice = st.selectbox("Select Metric to Analyze:", ["Traffic (Clicks)", "ROAS", "Revenue"])
-        show_anomaly = st.checkbox("🔍 Detect Anomalies (Auto)", value=True)
-
-    with col_ctrl2:
-        # --- 3. 绘制图表 (Visualization) ---
-
-        # 计算动态阈值 (公式：limit = 均值 ± 2倍标准差)
-        mean_val = df_demo[metric_choice].mean()
-        std_val = df_demo[metric_choice].std()
-        upper_limit = mean_val + 2 * std_val
-        lower_limit = mean_val - 2 * std_val
-
-        # 标记异常点
-        df_demo["Type"] = "Normal"
-        if show_anomaly:
-            df_demo.loc[df_demo[metric_choice] > upper_limit, "Type"] = "Anomaly (High)"
-            df_demo.loc[df_demo[metric_choice] < lower_limit, "Type"] = "Anomaly (Low)"
-
-        # 绘图
-        fig = px.scatter(
-            df_demo,
-            x="Date",
-            y=metric_choice,
-            color="Type",  # 颜色区分异常点
-            color_discrete_map={"Normal": "#1f77b4", "Anomaly (High)": "#2ca02c", "Anomaly (Low)": "#d62728"},
-            title=f"Time Series Analysis: {metric_choice} with Thresholding",
-            height=400
-        )
-
-        # 加上趋势线
-        fig.add_scatter(x=df_demo["Date"], y=[mean_val] * 90, mode='lines', name='Average',
-                        line=dict(dash='dash', color='gray'))
-
-        st.plotly_chart(fig, use_container_width=True)
 
     st.divider()
 
-    # --- 4. 业务洞察 (Business Insight) ---
-    st.info(f"""
-    **💡 Automated Insight:**
-    *   The system automatically flagged **{len(df_demo[df_demo['Type'] != 'Normal'])} data points** as statistical anomalies.
-    *   In a real-world scenario (like my experience at *Pingan Bank*), this triggers an automated alert to the Ops team, reducing diagnosis time from **days to hours**.
+    # -------------------------------------------------------------------------
+    # 2. 模拟业务场景数据 (Simulation Data)
+    # -------------------------------------------------------------------------
+    # 场景：CTR 下降。
+    # 原因：虽然 Search (高CTR) 和 Feed (低CTR) 的各自 CTR 都没怎么跌，
+    # 但 Feed 的流量占比从 50% 涨到了 80%，导致大盘 CTR 被拉低 (典型的 Mix Effect)。
+
+    # T0 (Base Period：基期，也就是参照的对比组)
+    clicks_t0 = 5000
+    imp_t0 = 100000
+    ctr_t0 = clicks_t0 / imp_t0  # 5.0%
+
+    # T1 (Current Period：当期，顾名思义，就是现在这个时期)
+    # 模拟：CTR 掉到了 3.8%
+    clicks_t1 = 4560
+    imp_t1 = 120000  # 曝光涨了
+    ctr_t1 = clicks_t1 / imp_t1  # 3.8%
+
+    delta_ctr = ctr_t1 - ctr_t0  # -1.2%
+
+    # 模拟第一层归因结果 (Global Level Decomposition)
+    # 汇总了所有子节点的 Rate Effect 和 Mix Effect
+
+
+    # 故事：Mix Effect (结构) 贡献了绝大部分跌幅 (-1.0%)，Rate Effect (效率) 只跌了一点点 (-0.2%)
+    total_rate_effect = -0.002
+    total_mix_effect = -0.010
+
+    # -------------------------------------------------------------------------
+    # 3. 核心指标看板 (KPIs)
+    # -------------------------------------------------------------------------
+    col_kpi1, col_kpi2, col_kpi3 = st.columns(3)
+    col_kpi1.metric("Global CTR (Period T0)", f"{ctr_t0 * 100:.2f}%")
+    col_kpi2.metric("Global CTR (Period T1)", f"{ctr_t1 * 100:.2f}%", delta=f"{delta_ctr * 100:.2f}%",
+                    delta_color="inverse")
+    col_kpi3.metric("Attribution Status", "⚠️ Mix-Driven Drop")
+
+    # -------------------------------------------------------------------------
+    # 4. 第一层：Rate/Mix 瀑布图 (Waterfall)
+    # -------------------------------------------------------------------------
+    st.subheader("1️⃣ Global Attribution: Rate vs. Mix")
+    st.caption(
+        "Did the CTR drop because ads performed worse (Rate), or because traffic shifted to low-CTR channels (Mix)?")
+
+    fig_waterfall = go.Figure(go.Waterfall(
+        name="CTR Decomposition", orientation="v",
+        measure=["relative", "relative", "relative", "total"],
+        x=["CTR T0", "Rate Effect (Efficiency)", "Mix Effect (Structure)", "CTR T1"],
+        textposition="outside",
+        text=[f"{ctr_t0 * 100:.2f}%", f"{total_rate_effect * 100:.2f}%", f"{total_mix_effect * 100:.2f}%",
+              f"{ctr_t1 * 100:.2f}%"],
+        y=[ctr_t0, total_rate_effect, total_mix_effect, ctr_t1],
+        connector={"line": {"color": "rgb(63, 63, 63)"}},
+        decreasing={"marker": {"color": "#FF4B4B"}},
+        increasing={"marker": {"color": "#2ECC71"}},
+        totals={"marker": {"color": "#1F77B4"}}
+    ))
+    fig_waterfall.update_layout(title="Drivers of CTR Drop", height=400, yaxis_tickformat=".2%")
+    st.plotly_chart(fig_waterfall, use_container_width=True)
+
+    st.info("""
+    **🧠 Insight:** 
+    The waterfall reveals a **Structural Issue (Mix Effect)**. 
+    The negative impact comes primarily from **Mix Effect (-1.0%)**, meaning high-quality traffic volume decreased or low-quality traffic increased. 
+    Efficiency (Rate Effect) remained relatively stable.
     """)
+
+    # -------------------------------------------------------------------------
+    # 5. 第二层：Beam Search 自动下钻结果 (Automated Drill-down)
+    # -------------------------------------------------------------------------
+    st.subheader("2️⃣ Automated Root Cause Discovery (Beam Search)")
+    st.markdown("""
+    The system executed a **Beam Search** algorithm (Top-K pruning) across dimensions: `Channel`, `App_Version`, `User_Tag`.
+    Here are the **Top Negative Contributors** identified automatically:
+    """)
+
+    if st.button("🚀 Run Beam Search Algorithm"):
+        import time
+
+        # 模拟计算
+        with st.spinner('Running multidimensional decomposition algorithm...'):
+            time.sleep(1.5)
+
+        # 模拟 Beam Search 返回的 flat_negative 结果列表
+        beam_results = [
+            {
+                "Path (Dimension Combination)": "Channel=Feed_Flow",
+                "CTR T0": "2.5%",
+                "CTR T1": "2.4%",
+                "Weight T0": "50%",
+                "Weight T1": "80% (⬆)",  # 流量占比暴涨，拉低了大盘
+                "Contribution": "-0.85%"
+            },
+            {
+                "Path (Dimension Combination)": "Region=Tier3_Cities",
+                "CTR T0": "3.0%",
+                "CTR T1": "2.9%",
+                "Weight T0": "20%",
+                "Weight T1": "35% (⬆)",
+                "Contribution": "-0.15%"
+            },
+            {
+                "Path (Dimension Combination)": "App_Version=v10.5 -> Channel=Search",
+                "CTR T0": "12.0%",
+                "CTR T1": "10.5% (⬇)",  # 真的跌了
+                "Weight T0": "10%",
+                "Weight T1": "10%",
+                "Contribution": "-0.12%"
+            }
+        ]
+
+        # 将结果转换为 DataFrame 展示
+        df_results = pd.DataFrame(beam_results)
+
+        # 高亮展示
+        st.dataframe(
+            df_results.style.map(lambda x: 'color: red' if 'Negative' in str(x) or '-' in str(x) else 'color: black'),
+            use_container_width=True
+        )
+
+        st.success("""
+        **🎯 Root Cause Found:** 
+        The primary driver is the significant **traffic shift towards 'Feed_Flow'** (Mix Effect). 
+        While 'Feed_Flow' CTR is stable, its volume share increased from 50% to 80%, diluting the overall performance.
+        **Action:** Re-evaluate bid adjustment for Feed Flow traffic.
+        """)
